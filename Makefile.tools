@@ -346,7 +346,7 @@ EXTRA_DIST += tools/bdaddr.1
 endif
 
 if READLINE
-noinst_PROGRAMS += attrib/gatttool \
+bin_PROGRAMS += attrib/gatttool \
 			tools/obex-client-tool tools/obex-server-tool \
 			tools/bluetooth-player tools/obexctl
 
@@ -383,7 +383,7 @@ noinst_PROGRAMS += tools/gatt-service
 tools_gatt_service_SOURCES = tools/gatt-service.c
 tools_gatt_service_LDADD = @GLIB_LIBS@ @DBUS_LIBS@ gdbus/libgdbus-internal.la
 
-noinst_PROGRAMS += profiles/iap/iapd
+bin_PROGRAMS += profiles/iap/iapd
 
 profiles_iap_iapd_SOURCES = profiles/iap/main.c
 profiles_iap_iapd_LDADD = gdbus/libgdbus-internal.la @GLIB_LIBS@ @DBUS_LIBS@

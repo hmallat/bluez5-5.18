@@ -107,6 +107,13 @@ Requires:   obex-capability
 %description -n obexd-server
 %{summary}.
 
+%package -n obexd-tools
+Summary:    Command line tools for OBEX
+Group:      Applications/System
+Requires:   obexd-server = %{version}-%{release}
+%description -n obexd-tools
+%{summary}.
+
 %prep
 %setup -q -n %{name}-%{version}
 
@@ -261,8 +268,10 @@ systemctl daemon-reload ||:
 %{_bindir}/bccmd
 %{_bindir}/bluemoon
 %{_bindir}/bluetoothctl
+%{_bindir}/bluetooth-player
 %{_bindir}/btmon
 %{_bindir}/ciptool
+%{_bindir}/gatttool
 %{_bindir}/hciattach
 %{_bindir}/hciconfig
 %{_bindir}/hcitool
@@ -288,3 +297,12 @@ systemctl daemon-reload ||:
 %{_libdir}/systemd/user/obex.service
 %{_libdir}/systemd/user/dbus-org.bluez.obex.service
 # << files -n obexd-server
+
+%files -n obexd-tools
+%defattr(-,root,root,-)
+# >> files -n obexd-tools
+%{_bindir}/obex-client-tool
+%{_bindir}/obex-server-tool
+%{_bindir}/obexctl
+# << files -n obexd-tools
+
