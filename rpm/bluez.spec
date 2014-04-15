@@ -17,7 +17,6 @@ Requires:   bluez-configs
 Requires:   dbus >= 0.60
 Requires:   hwdata >= 0.215
 Requires:   systemd
-Requires:   ofono
 Requires:   oneshot
 Requires(pre): /usr/sbin/groupadd
 Requires(preun): systemd
@@ -120,7 +119,9 @@ Requires:   obex-capability
 # << build pre
 
 ./bootstrap
-%reconfigure --disable-static \
+%reconfigure \
+    --enable-option-checking \
+    --disable-static \
     --enable-client \
     --enable-cups \
     --enable-library \
@@ -130,7 +131,6 @@ Requires:   obex-capability
     --enable-systemd \
     --enable-tools \
     --enable-test \
-    --with-telephony=ofono \
     --with-systemdunitdir=/lib/systemd/system
 
 make %{?jobs:-j%jobs}
