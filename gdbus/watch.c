@@ -248,6 +248,13 @@ proceed:
 	data->argument = g_strdup(argument);
 
 	if (!add_match(data, filter)) {
+		dbus_connection_unref(data->connection);
+		g_free(data->name);
+		g_free(data->owner);
+		g_free(data->path);
+		g_free(data->interface);
+		g_free(data->member);
+		g_free(data->argument);
 		g_free(data);
 		return NULL;
 	}
