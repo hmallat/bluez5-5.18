@@ -138,7 +138,9 @@ Requires:   obexd-server = %{version}-%{release}
     --enable-systemd \
     --enable-tools \
     --enable-test \
-    --with-systemdunitdir=/lib/systemd/system
+    --with-systemdsystemunitdir=/lib/systemd/system \
+    --with-systemduserunitdir=/usr/lib/systemd/user \
+    --with-phonebook=sailfish
 
 make %{?jobs:-j%jobs}
 

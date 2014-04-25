@@ -164,6 +164,15 @@ if (test "${enable_obex}" != "no"); then
 fi
 AM_CONDITIONAL(OBEX, test "${enable_obex}" != "no")
 
+AC_ARG_WITH([phonebook], AC_HELP_STRING([--with-phonebook=PLUGIN],
+				[PBAP phonebook plugin]),
+					[pbap_phonebook=${withval}])
+if (test -z "${pbap_phonebook}"); then
+	AC_SUBST(PBAP_PHONEBOOK, "dummy")
+else
+	AC_SUBST(PBAP_PHONEBOOK, [${pbap_phonebook}])
+fi
+
 AC_ARG_ENABLE(client, AC_HELP_STRING([--disable-client],
 		[disable command line client]), [enable_client=${enableval}])
 AM_CONDITIONAL(CLIENT, test "${enable_client}" != "no")
