@@ -170,16 +170,16 @@ for CONFFILE in profiles/input/input.conf profiles/network/network.conf profiles
 install -v -m644 ${CONFFILE} ${RPM_BUILD_ROOT}%{_sysconfdir}/bluetooth/`basename ${CONFFILE}`
 done
 
-# obex systemd integration
+# obexd systemd/D-Bus integration
 (cd $RPM_BUILD_ROOT/%{_libdir}/systemd/user && ln -s obex.service dbus-org.bluez.obex.service)
 
 # obexd wrapper
 install -m755 -D %{SOURCE1} ${RPM_BUILD_ROOT}/%{_libexecdir}/obexd-wrapper
 install -m644 -D %{SOURCE2} ${RPM_BUILD_ROOT}/%{_sysconfdir}/obexd.conf
-install -m 644 obexd/src/org.bluez.obex.service \
-    ${RPM_BUILD_ROOT}/%{_datadir}/dbus-1/services/org.bluez.obex.service
 sed -i 's,Exec=.*,Exec=/usr/libexec/obexd-wrapper,' \
     ${RPM_BUILD_ROOT}/%{_datadir}/dbus-1/services/org.bluez.obex.service
+sed -i 's,ExecStart=.*,ExecStart=/usr/libexec/obexd-wrapper,' \
+    ${RPM_BUILD_ROOT}/%{_libdir}/systemd/user/obex.service
 
 # obexd configuration
 mkdir -p ${RPM_BUILD_ROOT}/%{_sysconfdir}/obexd/{plugins,noplugins}
@@ -205,6 +205,18 @@ systemctl daemon-reload ||:
 %post libs -p /sbin/ldconfig
 
 %postun libs -p /sbin/ldconfig
+
+%preun -n obexd-server
+if [ "$1" -eq 0 ]; then
+systemctl-user stop obex.service ||:
+fi
+
+%post -n obexd-server
+systemctl-user daemon-reload ||:
+systemctl-user reload-or-try-restart obex.service ||:
+
+%postun -n obexd-server
+systemctl-user daemon-reload ||:
 
 %files
 %defattr(-,root,root,-)

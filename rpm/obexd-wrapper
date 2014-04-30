@@ -4,4 +4,4 @@ if [ -f /etc/obexd.conf ]; then
     . /etc/obexd.conf
 fi
 
-exec /usr/libexec/bluetooth/obexd --nodaemon $OBEXD_ARGUMENTS
+exec /usr/libexec/bluetooth/obexd --nodetach $OBEXD_ARGUMENTS
